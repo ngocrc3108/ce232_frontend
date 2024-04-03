@@ -8,7 +8,7 @@ import { AddDevice } from "./pages/addDevice";
 
 export const serverUrl = process.env.NODE_ENV == 'production' ? "https://ce232-backend.onrender.com" : "";
 
-export const myFetch = async (path, { body, method }) => {
+export const myFetch = async (path, { body, method } = {}) => {
     let options = {
         method: method || "POST",
         headers: {
