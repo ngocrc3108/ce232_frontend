@@ -6,7 +6,7 @@ import { socket } from "./socket";
 import { createContext } from "react";
 import { AddDevice } from "./pages/addDevice";
 
-const serverUrl = process.env.NODE_ENV == 'production' ? "https://ce232-backend.onrender.com" : "";
+export const serverUrl = process.env.NODE_ENV == 'production' ? "https://ce232-backend.onrender.com" : "";
 
 export const myFetch = async (path, { body, method }) => {
     let options = {
@@ -29,7 +29,7 @@ export const myFetch = async (path, { body, method }) => {
 
 export const AppContext = createContext(null);
 
-function App() {
+export function App() {
 
     
     const [loggedIn, setLoggedIn] = useState(() => undefined);
@@ -91,5 +91,3 @@ function App() {
         </div>
     );
 }
-
-export { App, serverUrl };
