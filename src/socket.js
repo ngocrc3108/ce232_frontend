@@ -1,9 +1,8 @@
 import { io } from 'socket.io-client';
-import { serverUrl } from './App';
 
 // "undefined" means the URL will be computed from the `window.location` object
-//const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000';
+const URL = process.env.NODE_ENV === 'production' ? "https://ce232-backend.onrender.com" : 'http://localhost:3000';
 
-export const socket = io(serverUrl, {
+export const socket = io(URL, {
     withCredentials : true,
 });
