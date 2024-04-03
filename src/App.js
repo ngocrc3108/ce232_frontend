@@ -5,8 +5,20 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { socket } from './socket';
 import { createContext  } from "react";
 import { AddDevice } from "./pages/addDevice";
-//const serverUrl = "https://ce232-do-an-server.onrender.com";
-const serverUrl = "";
+const serverUrl = "https://ce232-backend.onrender.com";
+//const serverUrl = "http://localhost:4001";
+
+export const myFetch = (path, body) => {
+  return fetch(`${serverUrl}${path}`, {
+      method: 'POST',
+      mode : "cors",
+      credentials : "include",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+  })
+}
 
 export const AppContext = createContext(null);
 
@@ -34,12 +46,12 @@ function App() {
     }, []);
 
     useEffect(() => {
-        fetch(`${serverUrl}/auth/isLoggedIn`)
-            .then((res) => res.json())
-            .then((res) => {
-              setLoggedIn(res.loggedIn)
-              console.log("logged in: ", res.loggedIn)
-            });
+        myFetch('/auth/isLoggedIn')
+        .then((res) => res.json())
+        .then((res) => {
+          setLoggedIn(res.loggedIn)
+          console.log("logged in: ", res.loggedIn)
+        });
     }, []);
 
     const router = createBrowserRouter([

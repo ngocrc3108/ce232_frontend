@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom";
 import { createContext  } from "react";
 import Stack from '@mui/material/Stack';
 import { serverUrl } from "../App";
+import { myFetch } from '../App';
 
 export const HomeContext = createContext(null);
 
@@ -37,7 +38,7 @@ function Home({loggedIn}) {
 
     useEffect(() => {
         // load initial devices
-        fetch(`/device`)
+        myFetch('/device')
         .then(res => res.json())
         .then(res => setDevices(res))
     }, [])

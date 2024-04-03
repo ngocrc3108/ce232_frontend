@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { serverUrl } from "../App";
+import { myFetch } from "../App";
+
 
 function Login({setLoggedIn}) {
     const [username, setUsername] = useState(() => "");
@@ -9,15 +11,8 @@ function Login({setLoggedIn}) {
     const navigate = useNavigate();
 
     const onButtonClick = async () => {
-        const {success, message} = await fetch(`${serverUrl}/auth/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        })
-        .then(res => res.json())
-        
+        const {success, message} = await myFetch('/auth/login', {username, password})
+                                        .then(res => res.json())
         setLoggedIn(success)
         setErrMessage(message)
 
