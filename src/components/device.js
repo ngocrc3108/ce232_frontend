@@ -1,6 +1,6 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import Switch from "./switch";
-import { AppContext } from "../App";
+import { AppContext, myFetch } from "../App";
 import Slider from '@mui/material/Slider';
 import style from '../styles/device.module.css'
 import SyncLoader from "react-spinners/SyncLoader";
@@ -8,14 +8,12 @@ import SyncLoader from "react-spinners/SyncLoader";
 const onOffHandler = (event, setStatus, device) => {
     const {checked} = event.target
     setStatus(checked);
-    fetch(`/device/${device.type}/status`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status : checked, deviceId : device._id }),
+    myFetch(`/device/${device.type}/status`, {
+        body : { 
+            status : checked,
+            deviceId : device._id
+        }
     })
-    .then(res => res.json())
     .then(res => console.log(res))
 };
 
@@ -61,14 +59,12 @@ function Fan() {
         const {value} = event.target
         setLevel(value);
         setSliderLoading(true)
-        fetch(`/device/${device.type}/level`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ level, deviceId : device._id }),
+        myFetch(`/device/${device.type}/level`, {
+            body : {
+                level,
+                deviceId : device._id
+            }
         })
-        .then(res => res.json())
         .then(res => console.log(res))        
     }
 
