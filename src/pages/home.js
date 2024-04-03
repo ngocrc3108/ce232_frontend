@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import { Outlet } from "react-router-dom";
 import { createContext  } from "react";
 import Stack from '@mui/material/Stack';
-import { serverUrl } from "../App";
 import { myFetch } from '../App';
 
 export const HomeContext = createContext(null);
@@ -17,13 +16,7 @@ function Home({loggedIn}) {
     const [devices, setDevices] = useState([]);
     
     const logoutHandler = () => {
-        fetch(`${serverUrl}/auth/logout`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-        })
-        .then(res => res.json())
+        myFetch('/auth/logout')
         .then(res => {
             if(res.success)
                 navigate('/login')
@@ -38,9 +31,13 @@ function Home({loggedIn}) {
 
     useEffect(() => {
         // load initial devices
-        myFetch('/device')
-        .then(res => res.json())
-        .then(res => setDevices(res))
+        myFetch('/device', {
+            method : 'GET'
+        })
+        .then(res => {
+            console.log("fetch devices", res)
+            setDevices(res)
+        })
     }, [])
 
     return (

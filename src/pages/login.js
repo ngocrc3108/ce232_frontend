@@ -11,8 +11,10 @@ function Login({setLoggedIn}) {
     const navigate = useNavigate();
 
     const onButtonClick = async () => {
-        const {success, message} = await myFetch('/auth/login', {username, password})
-                                        .then(res => res.json())
+        const {success, message} = await myFetch('/auth/login', {
+            body : {username, password}
+        })
+
         setLoggedIn(success)
         setErrMessage(message)
 

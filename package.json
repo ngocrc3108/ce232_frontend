@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:4001",
   "name": "project-app",
   "version": "0.1.0",
   "private": true,

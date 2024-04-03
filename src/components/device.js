@@ -42,7 +42,6 @@ function Fan() {
     const [sliderLoading, setSliderLoading] = useState(() => false)
 
     useEffect(() => {
-        console.log(`register res/${device._id}/level`)
         socket.on(`res/${device._id}/level`, ({success}) => {
             console.log(`res/${device._id}/level`)
             if(!success) {

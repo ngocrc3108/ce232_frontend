@@ -2,80 +2,94 @@ import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import Login from "./pages/login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { socket } from './socket';
-import { createContext  } from "react";
+import { socket } from "./socket";
+import { createContext } from "react";
 import { AddDevice } from "./pages/addDevice";
-const serverUrl = "https://ce232-backend.onrender.com";
-//const serverUrl = "http://localhost:4001";
 
-export const myFetch = (path, body) => {
-  return fetch(`${serverUrl}${path}`, {
-      method: 'POST',
-      mode : "cors",
-      credentials : "include",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-  })
-}
+const serverUrl = process.env.NODE_ENV == 'production' ? "https://ce232-backend.onrender.com" : "";
+
+export const myFetch = async (path, { body, method }) => {
+    let options = {
+        method: method || "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body)
+    }
+
+    if(process.env.NODE_ENV == 'production')
+        options = {...options,
+            mode: "cors",
+            credentials: "include"
+        }
+
+    return fetch(`${serverUrl}${path}`, options)
+	.then((res) => res.json());
+};
 
 export const AppContext = createContext(null);
 
 function App() {
+
+    
     const [loggedIn, setLoggedIn] = useState(() => undefined);
     const [isConnected, setIsConnected] = useState(socket.connected);
-
+    
     useEffect(() => {
-      function onConnect() {
-        setIsConnected(true);
-        console.log("socket connected")
-      }
-  
-      function onDisconnect() {
-        setIsConnected(false);
-      }
-  
-      socket.on('connect', onConnect);
-      socket.on('disconnect', onDisconnect);
-  
-      return () => {
-        socket.off('connect');
-        socket.off('disconnect');
-      };
+        console.log("NODE_ENV", process.env.NODE_ENV)
+
+        function onConnect() {
+            setIsConnected(true);
+            console.log("socket connected");
+        }
+
+        function onDisconnect() {
+            setIsConnected(false);
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+
+        return () => {
+            socket.off("connect");
+            socket.off("disconnect");
+        };
     }, []);
 
     useEffect(() => {
-        myFetch('/auth/isLoggedIn')
-        .then((res) => res.json())
-        .then((res) => {
-          setLoggedIn(res.loggedIn)
-          console.log("logged in: ", res.loggedIn)
+        myFetch("/auth/isLoggedIn", {
+			method : 'GET'
+		})
+		.then((res) => {
+            setLoggedIn(res.loggedIn);
+            console.log("logged in: ", res.loggedIn);
         });
     }, []);
 
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Home loggedIn={loggedIn}/>,
-            children : [{
-              path: "add/",
-              element: <AddDevice />
-            }],
+            element: <Home loggedIn={loggedIn} />,
+            children: [
+                {
+                    path: "add/",
+                    element: <AddDevice />,
+                },
+            ],
         },
         {
             path: "/login",
-            element: <Login setLoggedIn={setLoggedIn}/>,
+            element: <Login setLoggedIn={setLoggedIn} />,
         },
     ]);
 
     return (
         <div>
-          <AppContext.Provider value={{socket}}>
-            <RouterProvider router={router} />
-          </AppContext.Provider>
+            <AppContext.Provider value={{ socket }}>
+                <RouterProvider router={router} />
+            </AppContext.Provider>
         </div>
     );
 }
 
-export {App, serverUrl};
+export { App, serverUrl };
