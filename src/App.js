@@ -33,7 +33,7 @@ export function App() {
 
     
     const [loggedIn, setLoggedIn] = useState(() => undefined);
-    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [isConnected, setIsConnected] = useState(() => socket.connected);
     
     useEffect(() => {
         console.log("NODE_ENV", process.env.NODE_ENV)

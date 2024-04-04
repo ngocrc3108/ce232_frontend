@@ -27,18 +27,10 @@ function Home({loggedIn}) {
     useEffect(() => {
         if(loggedIn === false)
             navigate("/login")
+        else if(loggedIn === true)
+            myFetch('/device', {method : 'GET'})
+            .then(res => setDevices(res))
     }, [loggedIn]);
-
-    useEffect(() => {
-        // load initial devices
-        myFetch('/device', {
-            method : 'GET'
-        })
-        .then(res => {
-            console.log("fetch devices", res)
-            setDevices(res)
-        })
-    }, [])
 
     return (
         <div>
