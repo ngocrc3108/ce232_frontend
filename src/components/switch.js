@@ -8,7 +8,7 @@ import style from '../styles/device.module.css'
 function Switch({ onChange }) {
     const {socket} = useContext(AppContext)
     const {device, setIsConnected} = useContext(DeviceContext)
-    const [status, setStatus] = useState(() => device.status);
+    const [state, setState] = useState(() => device.state);
     const [loading, setLoading] = useState(() => false);
 
     useEffect(() => {
@@ -30,12 +30,12 @@ function Switch({ onChange }) {
     return (
         <div className={style.switch_containter}>
             <label>
-                { device.type === "door" ? (status ? "OPEN" : "CLOSE") : (status ? "ON" : "OFF")}    
+                { device.type === "door" ? (state ? "OPEN" : "CLOSE") : (state ? "ON" : "OFF")}    
                 <LiSwitch 
-                    checked={status}
+                    checked={state}
                     onChange={(event) => {
                         setLoading(true)
-                        onChange(event, setStatus, device)
+                        onChange(event, setState, device)
                     }}
                 />
             </label>

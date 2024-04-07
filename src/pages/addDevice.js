@@ -31,9 +31,9 @@ export const AddDevice = () => {
         })
         .then(res => res.json())
         .then(res => {
+            setMessage(res.message)
+            console.log(res)
             if(res.success) {
-                setMessage(res.message)
-                console.log(res)
                 setDevices((pre) => [{...res.device, type}, ...pre])
             }
         })

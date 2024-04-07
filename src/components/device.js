@@ -8,10 +8,10 @@ import SyncLoader from "react-spinners/SyncLoader";
 const onOffHandler = (event, setStatus, device) => {
     const {checked} = event.target
     setStatus(checked);
-    myFetch(`/device/${device.type}/status`, {
+    myFetch(`/device/${device.type}/state`, {
         body : { 
-            status : checked,
-            deviceId : device._id
+            state : checked,
+            deviceId : device._id,
         }
     })
     .then(res => console.log(res))
