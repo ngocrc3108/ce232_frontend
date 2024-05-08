@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
-import { serverUrl } from '../App';
+import { myFetch, serverUrl } from '../App';
 import style from '../styles/addDevice.module.css'
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
@@ -22,14 +22,9 @@ export const AddDevice = () => {
     const submitHandler = (event) => {
         event.preventDefault()
         console.log({id, name, type})
-        fetch(`${serverUrl}/device/${type}/add`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id, name }),
+        myFetch(`${serverUrl}/device/${type}/add`, {
+            body : { id, name }
         })
-        .then(res => res.json())
         .then(res => {
             setMessage(res.message)
             console.log(res)
