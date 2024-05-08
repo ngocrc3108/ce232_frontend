@@ -56,12 +56,13 @@ function Fan() {
     }, [])
 
     const onSliderChange = (event) => {
+        console.log("slider change")
         const {value} = event.target
         setLevel(value);
         setSliderLoading(true)
         myFetch(`/device/${device.type}/level`, {
             body : {
-                level,
+                level : value,
                 deviceId : device._id
             }
         })
@@ -81,11 +82,7 @@ function Fan() {
                     marks= {marks}
                     aria-label="Restricted values"
                     valueLabelDisplay="off"
-                    onChange={(event) => {
-                        console.log("slider change")
-                        setLevel(event.target.value)
-                        onSliderChange(event)
-                    }}
+                    onChange={onSliderChange}
                 />
                 </div>
                 <div className={style.slider_loading}>
@@ -121,7 +118,7 @@ function Device({ device }) {
     return (
             <div className= {`${style.device} ${isConnected ? style.device_conected : style.device_disconected}`}>
                 <DeviceContext.Provider value={{setIsConnected, device}} >
-                    <p className={style.connectStatus}> {isConnected ? "connected" : "disconected"} </p>
+                    <p className={style.connectStatus}> {isConnected ? "connected" : "disconnected"} </p>
                     <p> {device.name}</p>
                     {isConnected ? <div>
                         {type == "fan" ? <Fan/> :
