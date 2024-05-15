@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import Login from "./pages/login";
+import Register from "./pages/register";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { socket } from "./socket";
 import { createContext } from "react";
@@ -80,6 +81,10 @@ export function App() {
         {
             path: "/login",
             element: <Login setLoggedIn={setLoggedIn} />,
+        },
+        {
+            path: "/register",
+            element: <Register/>,
         },
     ]);
 
