@@ -1,11 +1,12 @@
-import { useEffect, useState, createContext, useContext } from "react";
-import Switch from "./switch";
-import { AppContext, myFetch } from "../App";
-import Slider from '@mui/material/Slider';
+import { useState, createContext } from "react";
+import { myFetch } from "../App";
 import style from '../styles/device.module.css'
-import SyncLoader from "react-spinners/SyncLoader";
+import Fan from "./fan"
+import Led from "./led"
+import Door from "./door"
 
-const onOffHandler = (event, setStatus, device) => {
+export const DeviceContext = createContext(null)
+export const onOffHandler = (event, setStatus, device) => {
     const {checked} = event.target
     setStatus(checked);
     myFetch(`/device/${device.type}/state`, {
@@ -17,101 +18,7 @@ const onOffHandler = (event, setStatus, device) => {
     .then(res => console.log(res))
 };
 
-const marks = [
-    {
-        value: 0,
-        label: "LOW",
-    },
-    {
-        value: 1,
-        label: "NORMAL",
-    },
-    {
-        value: 2,
-        label: "HIGH",
-    },
-];
-
-function Fan() {
-
-    const {socket} = useContext(AppContext)
-    const {device, setIsConnected} = useContext(DeviceContext)
-    const [level, setLevel] = useState(() => device.level);
-    const [sliderLoading, setSliderLoading] = useState(() => false)
-
-    useEffect(() => {
-        socket.on(`res/${device._id}/level`, ({success}) => {
-            console.log(`res/${device._id}/level`)
-            if(!success) {
-                setIsConnected(false)
-                console.log("can not handle request")
-            } else {
-                setSliderLoading(false)
-                console.log("handle request successfully")
-            }
-        })
-        return () => {
-            socket.off(`res/${device._id}/level`)
-        }        
-    }, [])
-
-    const onSliderChange = (event) => {
-        console.log("slider change")
-        const {value} = event.target
-        setLevel(value);
-        setSliderLoading(true)
-        myFetch(`/device/${device.type}/level`, {
-            body : {
-                level : value,
-                deviceId : device._id
-            }
-        })
-        .then(res => console.log(res))        
-    }
-
-    return (
-        <div>
-            <Switch onChange={onOffHandler}></Switch>
-            <div className={style.slider_containter}>
-                <div className={style.slider}>
-                <Slider
-                    value={level}
-                    step={null}
-                    min={0}
-                    max={2}
-                    marks= {marks}
-                    aria-label="Restricted values"
-                    valueLabelDisplay="off"
-                    onChange={onSliderChange}
-                />
-                </div>
-                <div className={style.slider_loading}>
-                    <SyncLoader loading={sliderLoading} size={7} color="#36d7b7"/>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function Led() {
-    return (
-        <div>
-            <Switch onChange={onOffHandler}></Switch>
-        </div>
-    );
-}
-
-function Door() {
-    return (
-        <div>
-            <Switch onChange={onOffHandler}></Switch>
-        </div>
-    );
-}
-
-export const DeviceContext = createContext(null)
-
-function Device({ device }) {
+export default function Device({ device }) {
     const [isConnected, setIsConnected] = useState(() => true)
     const {type} = device
 
@@ -130,5 +37,3 @@ function Device({ device }) {
             </div>
     )
 }
-
-export default Device;
