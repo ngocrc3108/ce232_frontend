@@ -11,11 +11,19 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Stack from '@mui/material/Stack';
 import Switch from "./switch";
+import { AppContext } from "../App";
 
 export default function Led() {
     const {device} = useContext(DeviceContext)
     const [time, setTime] = useState(() => dayjs(device.schedule.time))
     const [option, setOption] = useState(() => device.schedule.option)
+    const {socket} = useContext(AppContext)
+
+    // useEffect(() => {
+    //     socket.on("sync/led", ({state}) => {
+    //         console.log("sync led", state);
+    //     })
+    // }, [])
 
     useEffect(() => {
         const schedule = {option, time : time.toDate()}

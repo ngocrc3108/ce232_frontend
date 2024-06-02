@@ -42,6 +42,13 @@ export function App() {
         function onConnect() {
             setIsConnected(true);
             console.log("socket connected");
+            myFetch("/auth/isLoggedIn", {
+                method : 'GET'
+            })
+            .then((res) => {
+                setLoggedIn(res.loggedIn);
+                console.log("logged in: ", res.loggedIn);
+            });
         }
 
         function onDisconnect() {
@@ -55,16 +62,6 @@ export function App() {
             socket.off("connect");
             socket.off("disconnect");
         };
-    }, []);
-
-    useEffect(() => {
-        myFetch("/auth/isLoggedIn", {
-			method : 'GET'
-		})
-		.then((res) => {
-            setLoggedIn(res.loggedIn);
-            console.log("logged in: ", res.loggedIn);
-        });
     }, []);
 
     const router = createBrowserRouter([

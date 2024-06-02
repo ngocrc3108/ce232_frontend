@@ -22,9 +22,14 @@ function Switch({ onChange }) {
                 console.log("handle request successfully")
             }
         })
+        socket.on(`sync/${device._id}/state`, ({newState}) => {
+            console.log("on sync");
+            setState(newState);
+        })
         return () => {
             socket.off(`res/${device._id}/state`)
-        }        
+            socket.off(`sync/${device._id}/state`)
+        }      
     }, [])
 
     return (
@@ -32,7 +37,7 @@ function Switch({ onChange }) {
             <label>
                 { device.type === "door" ? (state ? "OPEN" : "CLOSE") : (state ? "ON" : "OFF")}    
                 <LiSwitch 
-                    checked={state}
+                    checked={!!state}
                     onChange={(event) => {
                         setLoading(true)
                         onChange(event, setState, device)
