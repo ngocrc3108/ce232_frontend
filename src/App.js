@@ -7,8 +7,6 @@ import { socket } from "./socket";
 import { createContext } from "react";
 import { AddDevice } from "./pages/addDevice";
 
-export const serverUrl = process.env.NODE_ENV == 'production' ? "https://ce232-backend.onrender.com" : "";
-
 export const myFetch = async (path, { body, method } = {}) => {
     let options = {
         method: method || "POST",
@@ -18,13 +16,7 @@ export const myFetch = async (path, { body, method } = {}) => {
         body: JSON.stringify(body)
     }
 
-    if(process.env.NODE_ENV == 'production')
-        options = {...options,
-            mode: "cors",
-            credentials: "include"
-        }
-
-    return fetch(`${serverUrl}${path}`, options)
+    return fetch(`${path}`, options)
 	.then((res) => res.json());
 };
 
