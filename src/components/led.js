@@ -40,7 +40,7 @@ export default function Led() {
 
     return (
         <div>
-            <Switch onChange={onOffHandler}></Switch>
+            <Switch></Switch>
             <Stack direction="row" spacing={2}>
                 <FormControl variant="standard" sx={{margin : 1.5, width : 100 }}>
                     <InputLabel></InputLabel>

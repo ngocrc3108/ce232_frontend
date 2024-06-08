@@ -1,6 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import Switch from "./switch";
-import { AppContext, myFetch } from "../App";
+import { myFetch } from "../App";
 import Slider from '@mui/material/Slider';
 import style from '../styles/device.module.css'
 import SyncLoader from "react-spinners/SyncLoader";
@@ -22,27 +22,9 @@ const marks = [
 ];
 
 export default function Fan() {
-
-    const {socket} = useContext(AppContext)
     const {device, setIsConnected} = useContext(DeviceContext)
     const [level, setLevel] = useState(() => device.level);
     const [sliderLoading, setSliderLoading] = useState(() => false)
-
-    useEffect(() => {
-        socket.on(`res/${device._id}/level`, ({success}) => {
-            console.log(`res/${device._id}/level`)
-            if(!success) {
-                setIsConnected(false)
-                console.log("can not handle request")
-            } else {
-                setSliderLoading(false)
-                console.log("handle request successfully")
-            }
-        })
-        return () => {
-            socket.off(`res/${device._id}/level`)
-        }        
-    }, [])
 
     const onSliderChange = (event) => {
         console.log("slider change")
@@ -55,12 +37,18 @@ export default function Fan() {
                 deviceId : device._id
             }
         })
-        .then(res => console.log(res))        
+        .then(res => {
+            console.log(res);
+            if(res.success)
+                setSliderLoading(false);
+            else
+                setIsConnected(false);
+        })        
     }
 
     return (
         <div>
-            <Switch onChange={onOffHandler}></Switch>
+            <Switch></Switch>
             <div className={style.slider_containter}>
                 <div className={style.slider}>
                 <Slider

@@ -1,22 +1,10 @@
 import { useState, createContext } from "react";
-import { myFetch } from "../App";
 import style from '../styles/device.module.css'
 import Fan from "./fan"
 import Led from "./led"
 import Door from "./door"
 
 export const DeviceContext = createContext(null)
-export const onOffHandler = (event, setStatus, device) => {
-    const {checked} = event.target
-    setStatus(checked);
-    myFetch(`/device/${device.type}/state`, {
-        body : { 
-            state : checked,
-            deviceId : device._id,
-        }
-    })
-    .then(res => console.log(res))
-};
 
 export default function Device({ device }) {
     const [isConnected, setIsConnected] = useState(() => true)

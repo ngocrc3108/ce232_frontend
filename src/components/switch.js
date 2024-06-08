@@ -1,27 +1,36 @@
 import { useState, useContext, useEffect } from "react";
 import SyncLoader from "react-spinners/SyncLoader";
 import { DeviceContext } from "./device";
-import { AppContext } from "../App";
+import { AppContext, myFetch } from "../App";
 import LiSwitch from '@mui/material/Switch';
 import style from '../styles/device.module.css'
 
-function Switch({ onChange }) {
+function Switch() {
     const {socket} = useContext(AppContext)
     const {device, setIsConnected} = useContext(DeviceContext)
     const [state, setState] = useState(() => device.state);
     const [loading, setLoading] = useState(() => false);
 
-    useEffect(() => {
-        socket.on(`res/${device._id}/state`, ({success}) => {
-            console.log(`res/${device._id}/state`)
-            if(!success) {
-                setIsConnected(false)
-                console.log("can not handle request")
-            } else {
-                setLoading(false)
-                console.log("handle request successfully")
+    const onOffHandler = (event) => {
+        const {checked} = event.target
+        setState(checked);
+        setLoading(true);
+        myFetch(`/device/${device.type}/state`, {
+            body : { 
+                state : checked,
+                deviceId : device._id,
             }
         })
+        .then(res => {
+            console.log(res);
+            if(res.success)
+                setLoading(false)
+            else
+                setIsConnected(false)
+        })
+    };
+
+    useEffect(() => {
         socket.on(`sync/${device._id}/state`, ({newState}) => {
             console.log("on sync");
             setState(newState);
@@ -38,10 +47,7 @@ function Switch({ onChange }) {
                 { device.type === "door" ? (state ? "OPEN" : "CLOSE") : (state ? "ON" : "OFF")}    
                 <LiSwitch 
                     checked={!!state}
-                    onChange={(event) => {
-                        setLoading(true)
-                        onChange(event, setState, device)
-                    }}
+                    onChange={onOffHandler}
                 />
             </label>
             <div className={style.switch_loading}>
