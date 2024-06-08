@@ -36,7 +36,6 @@ function Switch() {
             setState(newState);
         })
         return () => {
-            socket.off(`res/${device._id}/state`)
             socket.off(`sync/${device._id}/state`)
         }      
     }, [])
