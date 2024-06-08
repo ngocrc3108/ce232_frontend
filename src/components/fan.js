@@ -4,7 +4,7 @@ import { myFetch } from "../App";
 import Slider from '@mui/material/Slider';
 import style from '../styles/device.module.css'
 import SyncLoader from "react-spinners/SyncLoader";
-import { onOffHandler, DeviceContext } from "./device"
+import { DeviceContext } from "./device"
 
 const marks = [
     {
@@ -31,7 +31,7 @@ export default function Fan() {
         const {value} = event.target
         setLevel(value);
         setSliderLoading(true)
-        myFetch(`/device/${device.type}/level`, {
+        myFetch(`/api/user/device/${device.type}/level`, {
             body : {
                 level : value,
                 deviceId : device._id

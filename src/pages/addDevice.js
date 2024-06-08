@@ -22,7 +22,7 @@ export const AddDevice = () => {
     const submitHandler = (event) => {
         event.preventDefault()
         console.log({id, name, type})
-        myFetch(`/device/${type}/add`, {
+        myFetch(`/api/user/device/${type}/add`, {
             body : { id, name }
         })
         .then(res => {

@@ -16,7 +16,7 @@ function Home({loggedIn}) {
     const [devices, setDevices] = useState([]);
     
     const logoutHandler = () => {
-        myFetch('/auth/logout')
+        myFetch('/api/user/auth/logout')
         .then(res => {
             if(res.success)
                 navigate('/login')
@@ -28,7 +28,7 @@ function Home({loggedIn}) {
         if(loggedIn === false)
             navigate("/login")
         else if(loggedIn === true)
-            myFetch('/device', {method : 'GET'})
+            myFetch('/api/user/device', {method : 'GET'})
             .then(res => setDevices(res))
     }, [loggedIn]);
 

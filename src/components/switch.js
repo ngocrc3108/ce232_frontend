@@ -15,7 +15,7 @@ function Switch() {
         const {checked} = event.target
         setState(checked);
         setLoading(true);
-        myFetch(`/device/${device.type}/state`, {
+        myFetch(`/api/user/device/${device.type}/state`, {
             body : { 
                 state : Number(checked),
                 deviceId : device._id,

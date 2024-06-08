@@ -32,7 +32,8 @@ export default function Login({setLoggedIn}) {
             username,
             password,
         });
-        const {success, message} = await myFetch('/auth/login', {
+        setErrMessage("");
+        const {success, message} = await myFetch('/api/user/auth/login', {
             body : {username, password}
         })
 

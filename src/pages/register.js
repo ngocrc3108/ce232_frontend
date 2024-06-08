@@ -26,7 +26,7 @@ export default function Register() {
     const username = data.get('username')
     const password = data.get('password')
     console.log({username, password});
-    myFetch("/auth/register", {body : {username, password}})
+    myFetch("/api/user/auth/register", {body : {username, password}})
     .then(res => {
       setMessages(res.messages)
       console.log(res)

@@ -34,7 +34,7 @@ export function App() {
         function onConnect() {
             setIsConnected(true);
             console.log("socket connected");
-            myFetch("/auth/isLoggedIn", {
+            myFetch("/api/user/auth/isLoggedIn", {
                 method : 'GET'
             })
             .then((res) => {

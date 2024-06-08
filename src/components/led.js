@@ -4,31 +4,23 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
-import { onOffHandler, DeviceContext } from "./device"
+import { DeviceContext } from "./device"
 import { InputLabel } from '@mui/material';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Stack from '@mui/material/Stack';
 import Switch from "./switch";
-import { AppContext } from "../App";
 
 export default function Led() {
     const {device} = useContext(DeviceContext)
     const [time, setTime] = useState(() => dayjs(device.schedule.time))
     const [option, setOption] = useState(() => device.schedule.option)
-    const {socket} = useContext(AppContext)
-
-    // useEffect(() => {
-    //     socket.on("sync/led", ({state}) => {
-    //         console.log("sync led", state);
-    //     })
-    // }, [])
 
     useEffect(() => {
         const schedule = {option, time : time.toDate()}
         console.log(schedule)
-        myFetch("/device/led/schedule", {
+        myFetch("/api/user/device/led/schedule", {
             body : {
                 deviceId : device._id,
                 schedule
