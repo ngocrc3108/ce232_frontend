@@ -23,16 +23,12 @@ export const myFetch = async (path, { body, method } = {}) => {
 export const AppContext = createContext(null);
 
 export function App() {
-
-    
     const [loggedIn, setLoggedIn] = useState(() => undefined);
-    const [isConnected, setIsConnected] = useState(() => socket.connected);
     
     useEffect(() => {
         console.log("NODE_ENV", process.env.NODE_ENV)
 
         function onConnect() {
-            setIsConnected(true);
             console.log("socket connected");
             myFetch("/api/user/auth/isLoggedIn", {
                 method : 'GET'
@@ -44,7 +40,7 @@ export function App() {
         }
 
         function onDisconnect() {
-            setIsConnected(false);
+            console.log("socket disconnected");
         }
 
         socket.on("connect", onConnect);
