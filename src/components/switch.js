@@ -17,7 +17,7 @@ function Switch() {
         setLoading(true);
         myFetch(`/device/${device.type}/state`, {
             body : { 
-                state : checked,
+                state : Number(checked),
                 deviceId : device._id,
             }
         })
