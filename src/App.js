@@ -48,12 +48,10 @@ export function App() {
         {
             path: "/",
             element: <Home/>,
-            children: [
-                {
-                    path: "add/",
-                    element: <AddDevice />,
-                },
-            ],
+        },
+        {
+            path: "/add",
+            element: <AddDevice />,
         },
         {
             path: "/login",

@@ -75,7 +75,7 @@ export const AddDevice = () => {
                 padding={1}
             >
                 <Button variant="contained" type='submit' sx={{width: 1, minWidth: 100}} >Add</Button>            
-                <Button variant="contained" type='button' onClick={() => navigate('/')} sx={{width: 1, minWidth: 100}} >Cancel</Button>            
+                <Button variant="contained" type='button' onClick={() => navigate('/')} sx={{width: 1, minWidth: 100}} >Return</Button>            
             </Stack>
         </form>
     </div>
