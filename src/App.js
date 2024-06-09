@@ -23,20 +23,12 @@ export const myFetch = async (path, { body, method } = {}) => {
 export const AppContext = createContext(null);
 
 export function App() {
-    const [loggedIn, setLoggedIn] = useState(() => undefined);
     
     useEffect(() => {
         console.log("NODE_ENV", process.env.NODE_ENV)
 
         function onConnect() {
             console.log("socket connected");
-            myFetch("/api/user/auth/isLoggedIn", {
-                method : 'GET'
-            })
-            .then((res) => {
-                setLoggedIn(res.loggedIn);
-                console.log("logged in: ", res.loggedIn);
-            });
         }
 
         function onDisconnect() {
@@ -55,7 +47,7 @@ export function App() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Home loggedIn={loggedIn} />,
+            element: <Home/>,
             children: [
                 {
                     path: "add/",
@@ -65,7 +57,7 @@ export function App() {
         },
         {
             path: "/login",
-            element: <Login setLoggedIn={setLoggedIn} />,
+            element: <Login/>,
         },
         {
             path: "/register",

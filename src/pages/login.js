@@ -19,7 +19,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
 
-export default function Login({setLoggedIn}) {
+export default function Login() {
     const [errMessage, setErrMessage] = useState(() => "");
     const navigate = useNavigate();
 
@@ -37,7 +37,6 @@ export default function Login({setLoggedIn}) {
             body : {username, password}
         })
 
-        setLoggedIn(success)
         setErrMessage(message)
 
         if(success)
