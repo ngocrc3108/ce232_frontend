@@ -28,7 +28,7 @@ function Home() {
     useEffect(() => {
         socket.connect();
         console.log("connect to socket server");
-        myFetch('/api/user/device', {method : 'GET'})
+        myFetch('/api/user/device')
         .then(res => setDevices(res));
     }, []);
 
