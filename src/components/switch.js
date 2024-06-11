@@ -32,7 +32,8 @@ function Switch() {
 
     useEffect(() => {
         socket.on(`sync/${device._id}/state`, ({newState}) => {
-            console.log("on sync");
+            const time = new Date();
+            console.log("on sync, time", `${time.toLocaleTimeString()}.${time.getMilliseconds()}`);
             setState(newState);
         })
         return () => {
